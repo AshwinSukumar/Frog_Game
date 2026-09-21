@@ -1,0 +1,122 @@
+:root{
+  --bg: #FFFFFF; --ink: #24282E; --ink-soft: #5C626B;
+  --accent: #35708C; --line: #DCDDD9;
+}
+*{ box-sizing: border-box; }
+html, body{
+  margin: 0; height: 100%; overflow: hidden;
+  background: var(--bg); color: var(--ink);
+  font-family: "Segoe UI", "Noto Sans Arabic", Tahoma, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Text screens ---------- */
+.screen{
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: min(1.4vh, 14px);
+  padding: min(3vh, 34px) min(6vw, 100px);
+  text-align: center; background: var(--bg); overflow-y: auto;
+}
+.screen h1{
+  font-size: clamp(28px, 3.6vw, 54px); font-weight: 800;
+  letter-spacing: -.8px; margin: 0 0 clamp(10px, 2vh, 22px);
+}
+.screen p{
+  /* Sized from the smaller of width and height, so the block cannot
+     overflow a short window. Bold for young readers. */
+  font-size: min(2.1vw, 3.05vh, 34px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--ink);
+  margin: 0;
+  max-width: 44ch;
+}
+.game-title{ font-size: clamp(34px, 4.6vw, 72px) !important; }
+
+/* Post-practice transition screen — softer styling to match the Duck Game
+   transition (lighter title, soft-grey body copy, calmer button). */
+.screen.transition h1{ font-size: clamp(28px, 3.4vw, 50px); font-weight: 600; letter-spacing: -.5px; margin: 0 0 clamp(10px, 1.8vh, 20px); }
+.screen.transition p{ font-size: clamp(16px, 1.5vw, 25px); font-weight: 400; line-height: 1.5; color: var(--ink-soft); max-width: 60ch; margin: 3px 0; }
+.screen.transition .btn{ margin-top: clamp(18px, 3.4vh, 38px); padding: clamp(12px, 1.5vh, 18px) clamp(32px, 5vw, 62px); font-size: clamp(17px, 1.6vw, 25px); font-weight: 600; border-radius: 10px; }
+
+.field{ display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: min(1.6vh, 18px); }
+.field label{ font-size: min(2vw, 3.1vh, 32px); font-weight: 700; color: var(--ink); }
+.field input{
+  width: min(30vw, 420px); padding: min(1.8vh, 18px) 20px;
+  font-size: min(2.2vw, 3.4vh, 34px); font-family: inherit; font-weight: 700;
+  text-align: center; color: var(--ink); background: #fff;
+  border: 3px solid var(--line); border-radius: 12px; outline: none;
+}
+.field input:focus{ border-color: var(--accent); }
+.field-error{ min-height: 18px; font-size: min(1.3vw, 2vh, 18px); color: #A8402F; }
+
+.btn{
+  margin-top: min(1.8vh, 20px);
+  padding: min(2.1vh, 24px) min(8vw, 110px);
+  font-size: min(2.6vw, 4vh, 42px); font-family: inherit; font-weight: 700;
+  color: #fff; background: var(--accent); border: none; border-radius: 14px; cursor: pointer;
+}
+.btn:hover{ background: #2C5F78; }
+
+/* The two examples are pushed out toward their own sides of the screen,
+   so each sits nearer the side its stimulus will actually appear on. */
+.legend{ display: flex; flex-wrap: wrap;
+  justify-content: space-between; align-items: flex-start;
+  width: min(74vw, 1000px); gap: 24px;
+  margin-top: min(1.6vh, 18px); }
+.legend-item{ display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.legend-art{ width: min(10.5vw, 13vh, 150px); height: min(10.5vw, 13vh, 150px); }
+.legend-art svg{ width: 100%; height: 100%; }
+.legend-label{ font-size: min(2.2vw, 3.3vh, 36px); font-weight: 700; color: var(--ink); }
+
+/* ---------- Scene ---------- */
+#stage{ position: fixed; inset: 0; background: var(--bg); }
+#scene{
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  direction: ltr;                 /* never mirrored in the Arabic build */
+  background: var(--bg); overflow: hidden;
+}
+.stim, #duck{ position: absolute; }
+.stim svg, #duck svg{ width: 100%; height: 100%; display: block; }
+.stim{ visibility: hidden; }
+
+#duck.hop{ animation: character-hop 480ms ease-out; }
+@keyframes character-hop{
+  0%{ transform: translateY(0); } 35%{ transform: translateY(-14%); }
+  60%{ transform: translateY(0); } 75%{ transform: translateY(-5%); }
+  100%{ transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce){ #duck.hop{ animation: none; } }
+
+#feedback{
+  position: absolute; left: 0; right: 0; bottom: 11%;
+  padding: 0 6vw; text-align: center;
+  font-size: clamp(17px, 1.9vw, 30px); font-weight: 600; color: var(--accent);
+  min-height: 38px;
+}
+
+/* ---------- Researcher data view ---------- */
+.collect{ padding: 32px 38px; direction: ltr; text-align: left; overflow: auto; height: 100%; }
+.collect h2{ font-size: 28px; margin: 0 0 6px; }
+.collect p{ font-size: 14px; color: var(--ink-soft); margin: 4px 0 14px; }
+.collect textarea{
+  width: 100%; height: 330px; font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px; line-height: 1.45; padding: 10px;
+  border: 1px solid var(--line); border-radius: 8px; white-space: pre; overflow: auto;
+}
+.crow{ display: flex; gap: 11px; align-items: center; margin: 12px 0; flex-wrap: wrap; }
+.ccount{ font-size: 13.5px; color: var(--ink-soft); }
+.btn-mini{
+  padding: 7px 15px; font-size: 13px; font-family: inherit; font-weight: 600;
+  color: #fff; background: var(--accent); border: none; border-radius: 7px; cursor: pointer;
+}
+.btn-mini:hover{ background: #2C5F78; }
+.btn-mini-secondary{ color: var(--accent); background: #fff; border: 1px solid var(--accent); }
+
+
+
+/* Fixed-rectangle layout: artwork fills its box without distorting */
+.stim svg, #duck svg{ width: 100%; height: 100%; display: block; }
